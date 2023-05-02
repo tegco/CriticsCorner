@@ -1,0 +1,1 @@
+export const API_URL_MOVIES = "http://localhost:8000/api/movies";
