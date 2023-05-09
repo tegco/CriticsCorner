@@ -24,7 +24,9 @@ class Movie(models.Model):
     avg_rating = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
     watchlists = models.ManyToManyField("Watchlist")
 
-
+    def __str__(self):
+        """String for representing the MyModelName object (in Admin site etc.)."""
+        return self.imdb_id
 class Review(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="reviews_received")
     reviewer = models.ForeignKey(Reviewer, on_delete=models.CASCADE, related_name="reviews_given")
