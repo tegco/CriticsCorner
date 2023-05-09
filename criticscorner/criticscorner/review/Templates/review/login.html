@@ -1,0 +1,38 @@
+
+<head>
+    <meta charset="UTF-8">
+
+    {% block title %} Login {% endblock %}
+</head>
+
+<body>
+
+{% block content %}
+<h1>Entre na sua conta:</h1>
+
+<br>
+<fieldset>
+    <form action="{% url 'review:loginview' %}" method="post">
+        {% csrf_token %}
+
+        <label for="user">Nome de utilizador:</label>
+        <input type="text" id="user" name="user">
+
+        <br><br>
+
+        <label for="password">Palavra passe:</label>
+        <input type="password" id="password" name="password">
+        <br><br>
+        <input type="submit" value="Login">
+    </form>
+    <a href="{% url 'review:registar_user' %}">
+        <button class="create_btn">Registar</button>
+    </a>
+
+
+    {% if error_message %}
+    <p id="error_message"> {{ error_message }}</p>
+    {% endif %}
+</fieldset>
+{% endblock %}
+</body>

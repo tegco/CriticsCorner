@@ -1,0 +1,29 @@
+
+<head>
+    <meta charset="UTF-8">
+    {% block title %} Criar conta {% endblock %}
+</head>
+<body>
+
+{% block content %}
+
+<h1>Registe-se:</h1>
+<br>
+<fieldset>
+    <form action="{% url 'review:registar_user' %}" method="post">
+        {% csrf_token %}
+        <label for="user">Nome de utilizador:</label>
+        <input type="text" id="user" name="user">
+        <br><br>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email">
+        <br><br>
+        <label for="password">Palavra passe:</label>
+        <input type="password" id="password" name="password">
+        <br><br>
+        <input type="submit" value="Criar conta">
+    </form>
+</fieldset>
+
+{% endblock %}
+</body>

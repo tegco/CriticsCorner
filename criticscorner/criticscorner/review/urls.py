@@ -1,9 +1,12 @@
 from django.urls import include, path
 from . import views
 
-# (. significa que importa views da mesma directoria)
+app_name ='review'
 
 urlpatterns = [
-    path("", views.index, name="index"),
+ path("", views.index, name="index"),
+ path('registaruser', views.registar_user, name='registar_user'),
+ path('logoutview', views.logoutview, name='logoutview'),
+ path('loginview', views.loginview, name='loginview'),
 ]
 
