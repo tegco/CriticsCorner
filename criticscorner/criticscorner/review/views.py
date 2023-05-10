@@ -8,7 +8,7 @@ from .models import Reviewer
 
 
 def index(request):
-    return HttpResponse("Pagina de entrada da app review.")
+    return render(request, 'review/index.html')
 
 
 def registar_user(request):
