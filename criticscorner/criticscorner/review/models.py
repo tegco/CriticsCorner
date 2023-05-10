@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Reviewer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField("Review", through='Like',
-                                           related_name='liked_by')  # significa que o modelo Like é usado p/ gerir a relação Reviewer-Review
+                                   related_name='liked_by')  # significa que o modelo Like é usado p/ gerir a relação Reviewer-Review
     reviews = models.ManyToManyField("Review", through='Rating', related_name='rated_by')
     profile_picture = models.CharField(max_length=100)
 
@@ -18,7 +18,6 @@ class Movie(models.Model):
     plot = models.TextField()
     director = models.CharField(max_length=100)
     writer = models.CharField(max_length=100)
-    duration = models.PositiveIntegerField()
     poster_url = models.URLField()
     genres = models.CharField(max_length=100)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
@@ -27,6 +26,8 @@ class Movie(models.Model):
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
         return self.imdb_id
+
+
 class Review(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="reviews_received")
     reviewer = models.ForeignKey(Reviewer, on_delete=models.CASCADE, related_name="reviews_given")
