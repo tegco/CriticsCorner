@@ -1,0 +1,21 @@
+{% extends "review/index.html" %}
+
+<head>
+    <meta charset="UTF-8">
+    {% block title %} {{ movie.title}} {% endblock %}
+</head>
+
+<body>
+
+{% if error_message %}
+<p id="error_message"> {{ error_message }}</p>
+{% endif %}
+
+{% block content %}
+    <h1>{{ movie.title }}</h1>
+
+    <img id="detail-poster" src="{{movie.poster_url }} " >
+
+
+{% endblock %}
+</body>

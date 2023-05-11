@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: white;
+    margin: 0;
+    padding: 20px;
+    font-family: monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.content {
+    background-color: white;
+    background-size: cover;
+    padding: 10px;
+    font-size: 15px;
+}
+
+#detail-poster{
+    width: 280px;
+}
+
+
