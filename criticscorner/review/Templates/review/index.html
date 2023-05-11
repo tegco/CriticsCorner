@@ -20,6 +20,37 @@
 </head>
 <body>
 
+<header>
+    <div id="logo">
+            <img src="{% static 'images/Logo-idea-2-removebg-preview.png' %}" alt="Critics Corner Logotype"/>
+    </div>
+    <nav>
+        {% if user.is_authenticated %}
+        <ul class="navbar">
+            <li><a href="{% url 'review:index'%}"> Home </a>|</li>
+            <li id="profile-picture-index">
+                {% if request.user.reviewer.profile_picture == "" %}
+                <img src="{% static 'images/default.png' %}">
+                {% else %}
+                <img src="{% static request.user.reviewer.profile_picture %}">
+                {% endif %}
+            </li>
+
+            <li id="username">{{ user.get_username }}</li>
+            <li>|<a href="{% url 'review:logoutview'%}"> Logout</a></li>
+        </ul>
+
+        {% else %}
+        <ul class="navbar">
+            <li><a href="{% url 'review:index'%}">Home</a></li>
+            <li><a href="{% url 'review:loginview'%}">Login</a></li>
+        </ul>
+        {%endif%}
+    </nav>
+
+</header>
+
+
 {% block content %}
 {% endblock %}
 </body>

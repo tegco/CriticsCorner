@@ -1,4 +1,4 @@
-
+{% extends "review/index.html" %}
 <head>
     <meta charset="UTF-8">
 
@@ -8,25 +8,25 @@
 <body>
 
 {% block content %}
-<h1>Entre na sua conta:</h1>
+<h1>Log into your account</h1>
 
 <br>
 <fieldset>
     <form action="{% url 'review:loginview' %}" method="post">
         {% csrf_token %}
 
-        <label for="user">Nome de utilizador:</label>
+        <label for="user">Username:</label>
         <input type="text" id="user" name="user">
 
         <br><br>
 
-        <label for="password">Palavra passe:</label>
+        <label for="password">Password:</label>
         <input type="password" id="password" name="password">
         <br><br>
         <input type="submit" value="Login">
     </form>
-    <a href="{% url 'review:registar_user' %}">
-        <button class="create_btn">Registar</button>
+    <a href="{% url 'review:register_user' %}">
+        <button class="create_btn">Register</button>
     </a>
 
 
