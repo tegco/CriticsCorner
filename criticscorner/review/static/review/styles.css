@@ -32,7 +32,7 @@ nav {
 }
 
 a {
-    color: white;
+    color: black;
 }
 
 /* Para que não fique roxo depois de visitar */
@@ -45,8 +45,11 @@ nav a {
 
 }
 
+nav a:hover {
+    color: rgb(94, 100, 104);
+}
+
 nav ul li {
-    color: white;
     display: inline-block;
     padding-right: 10px;
     font-size: 18px;
@@ -203,6 +206,10 @@ ul {
     padding-left: 10px;
 
 
+}
+
+#username {
+    color: white;
 }
 
 #error_message {
