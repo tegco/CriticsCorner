@@ -1,0 +1,38 @@
+{% extends "review/index.html" %}
+
+<head>
+    <meta charset="UTF-8">
+    {% block title %} {{ movie.title}} {% endblock %}
+</head>
+
+<body>
+
+{% if error_message %}
+<p id="error_message"> {{ error_message }}</p>
+{% endif %}
+
+{% block content %}
+
+<div class="details-card">
+    <div id="details_poster">
+         <img id= "details-poster" src="{{movie.poster_url }}">
+    </div>
+    <br>
+    <div id="details-info">
+        <h1><b>{{ movie.title }}</b></h1>
+        <ul>
+            <li>{{movie.year}}</li>
+            <li> {{movie.genres}}</li> <br>
+            <li>Directed by: {{movie.director}}</li> <br>
+            <li>Written by: {{movie.writer}}</li>
+        </ul> <br><br>
+
+        {{movie.plot}}
+
+  </div>
+</div>
+
+
+
+{% endblock %}
+</body>

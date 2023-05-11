@@ -24,8 +24,54 @@ h1, h2 {
     font-size: 15px;
 }
 
-#detail-poster{
-    width: 280px;
+.details-card {
+    display: flex;
+    #align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 15px;
+    width: 70%;
+    max-height: fit-content;
+    margin: 0 auto;
 }
+.details-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+#details-poster{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 450px;
+}
+#details-info {
+    padding: 20px;
+    background-size: contain;
+    text-align: justify;
+    flex-grow: 1;
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#details-info ul {
+    list-style: none;
+    margin:10px 0 0 0;
+    text-align: left;
+
+}
+#details-info li {
+   display: inline;
+   color: #8ea3b4;
+    font-size: 15px;
+    padding-right: 30px;
+}
+
+
+
+
+
+
 
 
