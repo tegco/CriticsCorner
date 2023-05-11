@@ -20,19 +20,60 @@
     <br>
     <div id="details-info">
         <h1><b>{{ movie.title }}</b></h1>
-        <ul>
+        <ul id="basic-info">
             <li>{{movie.year}}</li>
-            <li> {{movie.genres}}</li> <br>
-            <li>Directed by: {{movie.director}}</li> <br>
-            <li>Written by: {{movie.writer}}</li>
-        </ul> <br><br>
+            <li> {{movie.genres}}</li>
+             <li>Rating: {{movie.avg_rating}}  ★</li>
+                <br><br>
+            <p>{{movie.plot}}</p>
+        </ul> <br>
 
-        {{movie.plot}}
-
+            <ul id="crew-info">
+                <li>Directed by: {{movie.director}}</li> <br>
+                <li>Written by: {{movie.writer}}</li><br><br>
+            </ul>
+    </div>
   </div>
+
+<div id="details-review">
+     <div id="details-rating" Rating>
+            <p>Rating</p> <br>
+          <form method="post" action="#action-url">
+             <input type="radio" name="rate" id="rate1">
+             <label for="rate1"></label>
+             <input type="radio" name="rate" id="rate2">
+             <label for="rate2"></label>
+             <input type="radio" name="rate" id="rate3">
+             <label for="rate3"></label>
+             <input type="radio" name="rate" id="rate4">
+             <label for="rate4"></label>
+             <input type="radio" name="rate" id="rate5">
+             <label for="rate5"></label>
+                <input type="radio" name="rate" id="rate6">
+             <label for="rate6"></label>
+             <input type="radio" name="rate" id="rate7">
+             <label for="rate7"></label>
+              <input type="radio" name="rate" id="rate8">
+             <label for="rate8"></label>
+             <input type="radio" name="rate" id="rate9">
+             <label for="rate9"></label>
+             <input type="radio" name="rate" id="rate10">
+             <label for="rate10"></label>
+          </form> <br><br>
+
+         <div id="details-comment">
+             <form id =details-review-comment method="post">
+                <textarea rows ="6" cols="80"></textarea>
+            </form>
+         </div>
+     </div>
+
+
 </div>
 
-
-
 {% endblock %}
+
+ <script type="text/javascript">
+ </script>
+
 </body>
