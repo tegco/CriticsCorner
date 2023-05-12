@@ -56,21 +56,8 @@ def logoutview(request):
     return HttpResponseRedirect(reverse('review:index'))
 
 
-# @login_required(login_url='review:loginview')
-# def details(request, movie_id):
-#    # Ver se o objeto movie tem acesso a todas as reviews
-#    movie = get_object_or_404(Movie, pk=movie_id)
-#    reviews = Review.objects.filter(movie=movie)
-#
-#    context = {
-#        'movie': movie,
-#       'reviews': reviews
-#    }
-#    return render(request, 'review/details.html', context)
-
-
 @login_required(login_url='review:loginview')
-def review_movie(request, movie_id):
+def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie)
@@ -84,14 +71,33 @@ def review_movie(request, movie_id):
         'reviews': reviews,
         'watchlists': watchlists
     }
+    return render(request, 'review/details.html', context)
+
+
+@login_required(login_url='review:loginview')
+def review_movie(request, movie_id):
+    # # Ver se o objeto movie tem acesso a todas as reviews
+    movie = get_object_or_404(Movie, pk=movie_id)
+    # reviews = Review.objects.filter(movie=movie)
+    # try:
+    #     watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.user_id)
+    # except Watchlist.DoesNotExist:
+    #     watchlists = None
+    #
+    # context = {
+    #     'movie': movie,
+    #     'reviews': reviews,
+    #     'watchlists': watchlists
+    # }
 
     if request.method != 'POST':
-        return render(request, 'review/details.html', context)
+        return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
     try:
         rating = request.POST['rating']  # Rating é obrigatório para todas as reviews
         comment = request.POST['comment']
     except KeyError:
+        messages.error(request=request, message="Fields missing")
         return render(request, 'review/details.html', {'movie': movie, 'error_message': "Fields missing."})
 
     if rating:
@@ -106,11 +112,11 @@ def review_movie(request, movie_id):
                             reviewer_id=request.user.reviewer.user_id)
         new_review.save()
 
-        messages.success(request, "Review successfully added!")
-        return HttpResponseRedirect(reverse('review:review_movie', args=(movie.id,)))
+        messages.success(request=request, message="Review successfully added!")
+        return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
-    messages.error(request, "Review does not have a rating.")
-    return HttpResponseRedirect(reverse('review:review_movie', args=(movie.id,)))
+    messages.error(request=request, message="Review does not have a rating.")
+    return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
 
 @permission_required('auth.delete_movie')
