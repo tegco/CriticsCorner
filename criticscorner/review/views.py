@@ -3,7 +3,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -118,14 +118,18 @@ def list_movies(request):
 
 
 @login_required(login_url='review:loginview')
-def add_to_watchlist(request, movie_id, watchlist_id):
+def add_to_watchlist(request, movie_id):
+    if request.method == 'POST':
+        watchlist_id = request.POST.get('watchlist_id')
+        print('ID', watchlist_id)
+        watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
+
     movie = Movie.objects.get(pk=movie_id)
-    watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
-    #watchlist = Watchlist.objects.get(pk=watchlist_id)
+    # watchlist = Watchlist.objects.get(pk=watchlist_id)
     watchlist.movies.add(movie)
     messages.success(request, 'Movie successfully added!')
-    return render(request, 'review/details.html',
-                  {'movie': movie, 'watchlist': watchlist, 'success_message': "Movie successfully added!"})
+
+    return render(request, 'review/details.html', {'movie': movie})
 
 
 @login_required(login_url='review:loginview')
