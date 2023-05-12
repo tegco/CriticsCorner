@@ -1,8 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -60,10 +61,15 @@ def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie)
+    try:
+        watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.user_id)
+    except Watchlist.DoesNotExist:
+        watchlists = None
 
     context = {
         'movie': movie,
-        'reviews': reviews
+        'reviews': reviews,
+        'watchlists': watchlists
     }
     return render(request, 'review/details.html', context)
 
@@ -112,15 +118,18 @@ def list_movies(request):
 
 
 @login_required(login_url='review:loginview')
-def add_watchlist(request, movie_id):
-    movie = Movie.objects.get(pk=movie_id)
-    try:
-        watchlist = Watchlist.objects.get(reviewer_id=request.user.reviewer)
-    except Watchlist.DoesNotExist:
-        watchlist = Watchlist.objects.create(reviewer_id=request.user.reviewer, name="My Watchlist")
-    watchlist.movies.add(movie)
+def add_to_watchlist(request, movie_id):
+    if request.method == 'POST':
+        watchlist_id = request.POST.get('watchlist_id')
+        print('ID', watchlist_id)
+        watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
 
-    return render(request, 'review/details.html', {'movie': movie, 'success_message': "Movie successfully added!"})
+    movie = Movie.objects.get(pk=movie_id)
+    # watchlist = Watchlist.objects.get(pk=watchlist_id)
+    watchlist.movies.add(movie)
+    messages.success(request, 'Movie successfully added!')
+
+    return render(request, 'review/details.html', {'movie': movie})
 
 
 @login_required(login_url='review:loginview')

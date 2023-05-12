@@ -23,6 +23,30 @@
     <br>
     <div id="details-info">
         <h1><b>{{ movie.title }}</b></h1>
+         <button id="add-to-watchlist-btn">Add to Watchlist</button>
+
+       <form id="add-to-watchlist-form" method="post" action="{% url 'review:add_to_watchlist' movie_id=movie.id %}">
+           {% csrf_token %}
+
+           <label for="watchlist-select">Add to Watchlist:</label>
+            <select name="watchlist_id" id="watchlist-select" style="display: none;">
+                {% for watchlist in watchlists %}
+                    <option value="{{ watchlist.id }}">{{ watchlist.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Add</button>
+        </form>
+
+        <script>
+        const watchlistSelect = document.getElementById("watchlist-select");
+        const addToWatchlistBtn = document.getElementById("add-to-watchlist-btn");
+
+        addToWatchlistBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            watchlistSelect.style.display = "block";
+        });
+    </script>
+
         <ul id="basic-info">
             <li>{{movie.year}}</li>
             <li> {{movie.genres}}</li>
