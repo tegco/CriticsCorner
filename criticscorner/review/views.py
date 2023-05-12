@@ -54,18 +54,20 @@ def logoutview(request):
     return HttpResponseRedirect(reverse('review:index'))
 
 
-@login_required(login_url='review:loginview')
+# @login_required(login_url='review:loginview')
 def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie)
+
     context = {
         'movie': movie,
         'reviews': reviews
     }
     return render(request, 'review/details.html', context)
 
-@login_required(login_url='review:loginview')
+
+@login_required(login_url='review:login')
 def review_movie(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
 
@@ -92,7 +94,6 @@ def review_movie(request, movie_id):
         return render(request, 'review/details.html', {'movie': movie, 'success_message': "Review successfully added!"})
 
     return render(request, 'review/details.html', {'movie': movie, 'error_message': "Review does not have a rating."})
-
 
 @permission_required('auth.delete_movie')
 def delete_movie(request, movie_id):

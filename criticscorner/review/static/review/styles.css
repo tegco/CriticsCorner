@@ -1,6 +1,144 @@
 * {
     box-sizing: border-box;
 }
+html,
+body {
+    background-color: white;
+    margin: 0;
+    padding: 20px;
+    font-family: monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    background-color: white;
+    background-size: cover;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.details-card {
+    display: flex;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px;
+    width: 75%;
+    max-height: fit-content;
+    margin: 0 auto;
+    background-color: black;
+}
+.details-card:hover {
+  box-shadow: 0 16px 20px 0 rgba(0,0,0,0.4);
+}
+
+#details-poster{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 325px;
+     border-radius: 10px;
+
+}
+#details-info {
+    padding: 20px;
+    background-size: contain;
+     border-radius: 10px;
+    text-align: left;
+    flex-grow: 1;
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#details-info ul {
+    list-style: none;
+    margin:10px 0 0 0;
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 15px;
+
+}
+#details-info li {
+   display: inline;
+   color: rgba(255, 255, 255, 0.94);
+    font-size: 15px;
+    padding-right: 30px;
+}
+
+#details-info h1,h2 {
+    text-align: left;
+}
+#basic-info li {
+    font-weight: bold;}
+    p {
+        color: gold;
+
+    }
+
+#crew-info li{
+    font-size: 12px;
+}
+
+#details-rating {
+    padding-left: 15px;
+	#transform: rotateY(360deg);
+	display: flex;
+}
+#details-rating label {
+        color: gold;
+        font-weight: bold;
+}
+
+#details-rating input {
+	display: none;
+}
+#details-rating label {
+	display: inline-block;
+	cursor: pointer;
+	width: 70px;
+    font-size: 18px;
+}
+
+#details-comment {
+    padding-left: 20px;
+}
+
+#details-review {
+    padding-left: 140px;
+    padding-top: 20px;
+}
+#details-list-users-reviews{
+    padding-left: 160px;
+}
+#details-list-users-reviews label{
+        color: gold;
+        font-weight: bold;
+        font-size: 18px;
+}
+
+#details-list-users-reviews-container {
+    border: 2px solid #ccc;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 16px;
+  margin: 16px 0;
+    width: 85%;
+}
+
+/* Clear floats after containers */
+#details-list-users-reviews-container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+/* Increase the font-size of a span element */
+#details-list-users-reviews-container span {
+  font-size: 14px;
+  margin-right: 15px;
+    font-weight: bold;
+}
 
 html,
 body {
@@ -19,11 +157,12 @@ h1, h2 {
 
 header {
     background-color: black;
-    padding: 45px;
+    padding: 35px;
     border-bottom: 4px solid lightgray;
     font-size: larger;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 25px;
 }
 
 nav {

@@ -1,0 +1,93 @@
+{% extends "review/index.html" %}
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <meta charset="UTF-8">
+    {% block title %} {{ movie.title}} {% endblock %}
+</head>
+
+<body>
+
+{% if error_message %}
+<p id="error_message"> {{ error_message }}</p>
+{% endif %}
+
+{% block content %}
+
+<div class="details-card">
+    <div id="details_poster">
+         <img id= "details-poster" src="{{movie.poster_url }}">
+    </div>
+    <br>
+    <div id="details-info">
+        <h1><b>{{ movie.title }}</b></h1>
+        <ul id="basic-info">
+            <li>{{movie.year}}</li>
+            <li> {{movie.genres}}</li>
+             <li>Rating: {{movie.avg_rating}}  ★</li>
+                <br><br>
+            <p>{{movie.plot}}</p>
+        </ul>
+
+            <ul id="crew-info">
+                <li>Directed by: {{movie.director}}</li> <br>
+                <li>Written by: {{movie.writer}}</li><br><br>
+            </ul>
+    </div>
+  </div>
+
+<div id="details-review">
+
+    <form id="review-form" method="post" action="{% url 'review:review_movie' movie_id=movie.id %}">
+        {% csrf_token %}
+
+     <div id="details-rating">
+          <label for="rating">Rating</label> <br>
+            <select name="rating" id="rating">
+                <option value="1">1★</option>
+                <option value="2">2★</option>
+                <option value="3">3★</option>
+                <option value="4">4★</option>
+                <option value="5">5★</option>
+                <option value="6">6★</option>
+                <option value="7">7★</option>
+                <option value="8">8★</option>
+                <option value="9">9★</option>
+                <option value="10">10★</option>
+            </select>
+     </div> <br>
+
+        <div id="details-comment">
+            <textarea name="comment" rows ="6" cols="80"></textarea><br>
+            <input type="submit" value="Submit">
+        </div>
+    </form> <br><br>
+
+     <script>
+            $(function() {
+                $('#rating').on('change', function() {
+                    $('#review-form').submit();
+                });
+            });
+     </script>
+</div>
+    <div id = details-list-users-reviews>
+         {% if reviews %}
+              <label>Reviews</label> <br>
+
+        <div id="details-list-users-reviews-container">
+            {% for review in reviews %}
+                <span>Rating: </span> {{ review.rating }} <br>
+                <span>Comment: </span>{{ review.comment }}
+            {% endfor %}
+        </div>
+        {% else %}
+            <p>No reviews yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+</body>
