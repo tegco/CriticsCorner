@@ -120,6 +120,28 @@ body {
     padding-top: 20px;
 }
 
+#details-list-users-reviews-container {
+    border: 2px solid #ccc;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 16px;
+  margin: 16px 0;
+    width: 85%;
+}
+
+/* Clear floats after containers */
+#details-list-users-reviews-container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+/* Increase the font-size of a span element */
+#details-list-users-reviews-container span {
+  font-size: 14px;
+  margin-right: 15px;
+    font-weight: bold;
+}
+
 html,
 body {
     background-color: white;

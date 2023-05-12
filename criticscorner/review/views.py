@@ -55,11 +55,16 @@ def logoutview(request):
 
 
 @login_required(login_url='review:loginview')
-#@login_required(login_url='review:login')
 def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
-    return render(request, 'review/details.html', {'movie': movie})
+    reviews = Review.objects.filter(movie=movie)
+
+    context = {
+        'movie': movie,
+        'reviews': reviews
+    }
+    return render(request, 'review/details.html', context)
 
 
 @login_required(login_url='review:login')
@@ -69,26 +74,29 @@ def review_movie(request, movie_id):
     if request.method != 'POST':
         return render(request, 'review/details.html', {'movie': movie})
     try:
-        rating = request.POST['rating']  # Rating é obrigatório para todas as reviews
+        # rating = request.POST['rating']  # Rating é obrigatório para todas as reviews
         comment = request.POST['comment']
     except KeyError:
         return render(request, 'review/details.html', {'movie': movie, 'error_message': "Fields missing."})
 
-    if rating:
-        if not comment or comment == "":
-            comment = None  # <-- Ver se isto é transformado para 'null' na base de dados
+    # if rating:
+    if not comment or comment == "":
+        comment = None  # <-- Ver se isto é transformado para 'null' na base de dados
 
-        new_review = Review(rating=rating,
-                            comment=comment,
-                            likes_count=0,
-                            created_at=timezone.now(),
-                            movie_id=movie_id,
-                            reviewer_id=request.user.user_id)
+        new_review = Review(  # rating=rating,
+            comment=comment,
+            likes_count=0,
+            created_at=timezone.now(),
+            movie_id=movie_id,
+            reviewer_id=request.user.user_id)
         new_review.save()
 
         return render(request, 'review/details.html', {'movie': movie, 'success_message': "Review successfully added!"})
 
     return render(request, 'review/details.html', {'movie': movie, 'error_message': "Review does not have a rating."})
+
+
+# def list_reviews(request, movie_id):
 
 
 @permission_required('auth.delete_movie')

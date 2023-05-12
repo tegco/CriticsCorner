@@ -59,14 +59,33 @@
              <label for="rate9"></label>
              <input type="radio" name="rate" id="rate10">
              <label for="rate10"></label>
+
           </form> <br><br>
 
          <div id="details-comment">
-             <form id =details-review-comment method="post">
-                <textarea rows ="6" cols="80"></textarea>
+             <form id =details-review-comment action="{% url 'review:review_movie' movie.id %}" method="post">
+                  {% csrf_token %}
+                <textarea name="comment" rows ="6" cols="80"></textarea><br>
+                 <button name="submit" type="submit" value="Submit">Submit review</button>
             </form>
          </div>
      </div>
+
+    <div id = details-list-users-reviews>
+         {% if reviews %}
+            <h3>Reviews:</h3>
+
+        <div id="details-list-users-reviews-container">
+            {% for review in reviews %}
+                <span>Rating: </span> {{ review.rating }} <br>
+                <span>Comment: </span>{{ review.comment }}
+            {% endfor %}
+        </div>
+
+        {% else %}
+            <p>No reviews yet.</p>
+        {% endif %}
+    </div>
 
 
 </div>
