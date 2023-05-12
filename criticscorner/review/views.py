@@ -132,18 +132,6 @@ def display_watchlist(request):
         movies_in_watchlists.append((watchlist, movies))
 
     return render(request, 'review/watchlist.html', {'movies_in_watchlists': movies_in_watchlists})
-    # watchlist = Watchlist.objects.select_related('reviewer').prefetch_related(
-    #     Prefetch('movies', queryset=Movie.objects.all())
-    # ).get(reviewer=request.user.reviewer)
-    #
-    # return render(request, 'review/watchlist.html', {'watchlist': watchlist})
-    # try:
-    #     watchlist = get_object_or_404(Watchlist, reviewer_id=request.user.reviewer)
-    #     movies = get_object_or_404(Movie, watchlist=watchlist.pk)
-    # except Watchlist.DoesNotExist:
-    #     watchlist = None
-    #
-    # return render(request, 'review/watchlist.html', {'watchlist': watchlist}, )
 
 # @api_view(['GET'])
 # def movie_detail(request, movie_id):
