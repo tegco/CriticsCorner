@@ -56,8 +56,8 @@ def logoutview(request):
     return HttpResponseRedirect(reverse('review:index'))
 
 
-#@login_required(login_url='review:loginview')
-#def details(request, movie_id):
+# @login_required(login_url='review:loginview')
+# def details(request, movie_id):
 #    # Ver se o objeto movie tem acesso a todas as reviews
 #    movie = get_object_or_404(Movie, pk=movie_id)
 #    reviews = Review.objects.filter(movie=movie)
@@ -131,15 +131,15 @@ def list_movies(request):
 def add_to_watchlist(request, movie_id):
     if request.method == 'POST':
         watchlist_id = request.POST.get('watchlist_id')
-        print('ID', watchlist_id)
         watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
+        movie = Movie.objects.get(pk=movie_id)
 
-    movie = Movie.objects.get(pk=movie_id)
-    # watchlist = Watchlist.objects.get(pk=watchlist_id)
-    watchlist.movies.add(movie)
-    messages.success(request, 'Movie successfully added!')
-
-    return render(request, 'review/details.html', {'movie': movie})
+        if watchlist.movies.filter(pk=movie_id).exists():
+            messages.warning(request, 'Movie is already in the watchlist.')
+        else:
+            watchlist.movies.add(movie)
+            messages.success(request, 'Movie successfully added!')
+    return HttpResponseRedirect(reverse('review:review_movie', args=(movie.id,)))
 
 
 @login_required(login_url='review:loginview')
