@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Reviewer, Movie
+from .models import *
 from .serializers import *
 
 
@@ -108,6 +108,27 @@ def list_movies(request):
     movies = Movie.objects.all()
     movie_serializer = MovieSerializer(movies, context={'request': request}, many=True)
     return Response(movie_serializer.data)
+
+
+def add_watchlist(request, movie_id):
+    movie = Movie.objects.get(pk=movie_id)
+
+    try:
+        watchlist = Watchlist.objects.get(reviewer=request.user.reviewer)
+    except Watchlist.DoesNotExist:
+        watchlist = Watchlist.objects.create(reviewer=request.user.reviewer, name="My Watchlist")
+    watchlist.movies.add(movie)
+
+    return render(request, 'review/details.html', {'movie': movie, 'success_message': "Movie successfully added!"})
+
+
+def display_watchlist(request):
+    try:
+        watchlist = Watchlist.objects.get(reviewer=request.user.reviewer)
+    except Watchlist.DoesNotExist:
+        watchlist = None
+
+    return render(request, 'review/watchlist.html', {'watchlist': watchlist})
 
 # @api_view(['GET'])
 # def movie_detail(request, movie_id):

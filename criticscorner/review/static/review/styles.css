@@ -140,6 +140,10 @@ body {
     font-weight: bold;
 }
 
+#watchlist {
+    margin: auto;
+}
+
 html,
 body {
     background-color: white;

@@ -1,0 +1,18 @@
+{% extends 'review/index.html' %}
+
+{% block content %}
+
+<div id="watchlist">
+    <h2>{{user.username}}'s Watchlist</h2>
+  {% if watchlist_items %}
+    <ul>
+      {% for item in watchlist_items %}
+        <li><a href="{% url 'movie_detail' item.movie.pk %}">{{ item.movie.title }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Your watchlist is empty.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -35,7 +35,7 @@
                 <img src="{% static request.user.reviewer.profile_picture %}">
                 {% endif %}
             </li>
-
+            <li id="Watchlist">|<a href="{% url 'review:display_watchlist'%}"> My Watchlist</a></li>
             <li id="username">{{ user.get_username }}</li>
             <li>|<a href="{% url 'review:logoutview'%}"> Logout</a></li>
         </ul>
