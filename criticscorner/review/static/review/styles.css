@@ -70,6 +70,22 @@ body {
 #details-info h1,h2 {
     text-align: left;
 }
+#details-info form, button {
+    margin-left:75%;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+#details-info button {
+      background-color: rgba(171, 129, 129, 0.96);
+        margin-left: auto;
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+    border-radius: 5px;
+    padding-inline: 5px;
+}
 #basic-info li {
     font-weight: bold;}
     p {

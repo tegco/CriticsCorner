@@ -9,7 +9,8 @@ urlpatterns = [
     path('register', views.register_user, name='register_user'),
     path('logout', views.logoutview, name='logoutview'),
     path('login', views.loginview, name='loginview'),
-    path('watchlist', views.display_watchlist, name='display_watchlist'),
+    path('watchlist/add/<int:movie_id>/', views.add_to_watchlist, name='add_to_watchlist'),
+    path('watchlists', views.display_watchlist, name='display_watchlist'),
     path('<int:movie_id>', views.details, name='details'),
     # O admin pode apagar um movie
     path('<int:movie_id>/delete_movie', views.delete_movie, name='delete_movie'),

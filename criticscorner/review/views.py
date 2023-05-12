@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
@@ -60,10 +61,15 @@ def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie)
+    try:
+        watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.user_id)
+    except Watchlist.DoesNotExist:
+        watchlists = None
 
     context = {
         'movie': movie,
-        'reviews': reviews
+        'reviews': reviews,
+        'watchlists': watchlists
     }
     return render(request, 'review/details.html', context)
 
@@ -112,15 +118,14 @@ def list_movies(request):
 
 
 @login_required(login_url='review:loginview')
-def add_watchlist(request, movie_id):
+def add_to_watchlist(request, movie_id, watchlist_id):
     movie = Movie.objects.get(pk=movie_id)
-    try:
-        watchlist = Watchlist.objects.get(reviewer_id=request.user.reviewer)
-    except Watchlist.DoesNotExist:
-        watchlist = Watchlist.objects.create(reviewer_id=request.user.reviewer, name="My Watchlist")
+    watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
+    #watchlist = Watchlist.objects.get(pk=watchlist_id)
     watchlist.movies.add(movie)
-
-    return render(request, 'review/details.html', {'movie': movie, 'success_message': "Movie successfully added!"})
+    messages.success(request, 'Movie successfully added!')
+    return render(request, 'review/details.html',
+                  {'movie': movie, 'watchlist': watchlist, 'success_message': "Movie successfully added!"})
 
 
 @login_required(login_url='review:loginview')
