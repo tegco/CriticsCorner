@@ -106,9 +106,11 @@ def review_movie(request, movie_id):
                             reviewer_id=request.user.reviewer.user_id)
         new_review.save()
 
-        return render(request, 'review/details.html', {'movie': movie, 'success_message': "Review successfully added!"})
+        messages.success(request, "Review successfully added!")
+        return HttpResponseRedirect(reverse('review:review_movie', args=(movie.id,)))
 
-    return render(request, 'review/details.html', {'movie': movie, 'error_message': "Review does not have a rating."})
+    messages.error(request, "Review does not have a rating.")
+    return HttpResponseRedirect(reverse('review:review_movie', args=(movie.id,)))
 
 
 @permission_required('auth.delete_movie')
