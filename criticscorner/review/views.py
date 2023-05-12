@@ -56,8 +56,21 @@ def logoutview(request):
     return HttpResponseRedirect(reverse('review:index'))
 
 
+#@login_required(login_url='review:loginview')
+#def details(request, movie_id):
+#    # Ver se o objeto movie tem acesso a todas as reviews
+#    movie = get_object_or_404(Movie, pk=movie_id)
+#    reviews = Review.objects.filter(movie=movie)
+#
+#    context = {
+#        'movie': movie,
+#       'reviews': reviews
+#    }
+#    return render(request, 'review/details.html', context)
+
+
 @login_required(login_url='review:loginview')
-def details(request, movie_id):
+def review_movie(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie)
@@ -71,15 +84,10 @@ def details(request, movie_id):
         'reviews': reviews,
         'watchlists': watchlists
     }
-    return render(request, 'review/details.html', context)
-
-
-@login_required(login_url='review:loginview')
-def review_movie(request, movie_id):
-    movie = get_object_or_404(Movie, pk=movie_id)
 
     if request.method != 'POST':
-        return render(request, 'review/details.html', {'movie': movie})
+        return render(request, 'review/details.html', context)
+
     try:
         rating = request.POST['rating']  # Rating é obrigatório para todas as reviews
         comment = request.POST['comment']
@@ -95,7 +103,7 @@ def review_movie(request, movie_id):
                             likes_count=0,
                             created_at=timezone.now(),
                             movie_id=movie_id,
-                            reviewer_id=request.user.user_id)
+                            reviewer_id=request.user.reviewer.user_id)
         new_review.save()
 
         return render(request, 'review/details.html', {'movie': movie, 'success_message': "Review successfully added!"})
@@ -141,6 +149,22 @@ def display_watchlist(request):
         movies_in_watchlists.append((watchlist, movies))
 
     return render(request, 'review/watchlist.html', {'movies_in_watchlists': movies_in_watchlists})
+
+
+@login_required(login_url='review:loginview')
+def like_movie(request, review_id):
+    review = Review.objects.get(pk=review_id)
+    reviewer_liking = request.user.reviewer
+    current_likes = review.likes_count
+
+    liked = Like.objects.filter(reviewer=reviewer_liking, review=review).count()
+
+    if not liked:
+        like = Like.objects.create(reviewer=reviewer_liking, review=review, created_at=timezone.now())
+        current_likes = current_likes + 1
+    review.likes_count = current_likes
+    review.save()
+    return HttpResponseRedirect(reverse('review:review_movie', args=(review.movie.id,)))
 
 # @api_view(['GET'])
 # def movie_detail(request, movie_id):

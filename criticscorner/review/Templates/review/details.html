@@ -5,6 +5,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <meta charset="UTF-8">
+    {% load static %}
     {% block title %} {{ movie.title}} {% endblock %}
 </head>
 
@@ -103,7 +104,12 @@
 
         <div id="details-list-users-reviews-container">
             {% for review in reviews %}
-                <span>Rating: </span> {{ review.rating }} <br>
+                <span>Rating: </span> {{ review.rating }}
+                <span>
+                    <a href="{% url 'review:like_movie' review_id=review.id %}">
+                        <img src="{% static 'images/like.png' %}" alt="Like img" style="width: 30px"/>
+                    </a> {{ review.likes_count }}
+                </span><br>
                 <span>Comment: </span>{{ review.comment }}
             {% endfor %}
         </div>
