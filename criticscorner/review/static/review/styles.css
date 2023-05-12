@@ -71,8 +71,11 @@ body {
     text-align: left;
 }
 #basic-info li {
-    font-weight: bold;
-}
+    font-weight: bold;}
+    p {
+        color: gold;
+
+    }
 
 #crew-info li{
     font-size: 12px;
@@ -82,9 +85,11 @@ body {
     padding-left: 15px;
 	#transform: rotateY(360deg);
 	display: flex;}
-    p {
+    label {
         color: gold;
+        font-weight: bold;
     }
+
 
 #details-rating input {
 	display: none;
@@ -92,33 +97,27 @@ body {
 #details-rating label {
 	display: inline-block;
 	cursor: pointer;
-	width: 30px;
+	width: 70px;
+    font-size: 18px;
 }
-#details-rating label:before {
-	content: '★';
-    position: relative;
-	display: block;
-	#display: inline-block;
-	font-size: 35px;
-	color: gray;
-}
-#details-rating label:after {
-	content: '★';
-	display: block;
-	font-size: 35px;
-	color: orange;
-	top: 0;
-	opacity: 0;
-	transition: .6s;
-}
-#details-rating label:hover:after, .wrapper label:hover~label:after, .wrapper input:checked~label:after {
-	opacity: 1;
+
+#details-comment {
+    padding-left: 20px;
 }
 
 #details-review {
     padding-left: 140px;
     padding-top: 20px;
 }
+#details-list-users-reviews{
+    padding-left: 160px;}
+
+    label {
+        color: gold;
+        font-weight: bold;
+        font-size: 18px;
+
+        }
 
 #details-list-users-reviews-container {
     border: 2px solid #ccc;
