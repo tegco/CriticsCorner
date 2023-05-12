@@ -58,8 +58,12 @@ def logoutview(request):
 def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
-    return render(request, 'review/details.html', {'movie': movie})
-
+    reviews = Review.objects.filter(movie=movie)
+    context = {
+        'movie': movie,
+        'reviews': reviews
+    }
+    return render(request, 'review/details.html', context)
 
 @login_required(login_url='review:loginview')
 def review_movie(request, movie_id):
