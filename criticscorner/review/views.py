@@ -48,12 +48,13 @@ def loginview(request):
         return render(request, 'review/login.html')
 
 
-@login_required(login_url='review:login')
+@login_required(login_url='review:loginview')
 def logoutview(request):
     logout(request)
     return HttpResponseRedirect(reverse('review:index'))
 
 
+@login_required(login_url='review:loginview')
 #@login_required(login_url='review:login')
 def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
