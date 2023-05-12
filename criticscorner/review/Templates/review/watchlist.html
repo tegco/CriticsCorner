@@ -1,0 +1,25 @@
+{% extends 'review/index.html' %}
+
+{% block content %}
+
+<div id="watchlist">
+    <h2>{{user.username}}'s Watchlists</h2>
+    {% if movies_in_watchlists %}
+    <ul>
+      {% for watchlist, movies in movies_in_watchlists %}
+        <li>
+          <h2>{{ watchlist.name }}</h2>
+          <ul>
+            {% for movie in movies %}
+              <li>{{ movie.title }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You don't have any watchlists yet.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
