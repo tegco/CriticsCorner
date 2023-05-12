@@ -1,6 +1,7 @@
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -110,25 +111,39 @@ def list_movies(request):
     return Response(movie_serializer.data)
 
 
+@login_required(login_url='review:loginview')
 def add_watchlist(request, movie_id):
     movie = Movie.objects.get(pk=movie_id)
-
     try:
-        watchlist = Watchlist.objects.get(reviewer=request.user.reviewer)
+        watchlist = Watchlist.objects.get(reviewer_id=request.user.reviewer)
     except Watchlist.DoesNotExist:
-        watchlist = Watchlist.objects.create(reviewer=request.user.reviewer, name="My Watchlist")
+        watchlist = Watchlist.objects.create(reviewer_id=request.user.reviewer, name="My Watchlist")
     watchlist.movies.add(movie)
 
     return render(request, 'review/details.html', {'movie': movie, 'success_message': "Movie successfully added!"})
 
 
+@login_required(login_url='review:loginview')
 def display_watchlist(request):
-    try:
-        watchlist = Watchlist.objects.get(reviewer=request.user.reviewer)
-    except Watchlist.DoesNotExist:
-        watchlist = None
+    watchlists = Watchlist.objects.filter(reviewer_id=request.user.reviewer.user_id)
+    movies_in_watchlists = []
+    for watchlist in watchlists:
+        movies = watchlist.movies.all()
+        movies_in_watchlists.append((watchlist, movies))
 
-    return render(request, 'review/watchlist.html', {'watchlist': watchlist})
+    return render(request, 'review/watchlist.html', {'movies_in_watchlists': movies_in_watchlists})
+    # watchlist = Watchlist.objects.select_related('reviewer').prefetch_related(
+    #     Prefetch('movies', queryset=Movie.objects.all())
+    # ).get(reviewer=request.user.reviewer)
+    #
+    # return render(request, 'review/watchlist.html', {'watchlist': watchlist})
+    # try:
+    #     watchlist = get_object_or_404(Watchlist, reviewer_id=request.user.reviewer)
+    #     movies = get_object_or_404(Movie, watchlist=watchlist.pk)
+    # except Watchlist.DoesNotExist:
+    #     watchlist = None
+    #
+    # return render(request, 'review/watchlist.html', {'watchlist': watchlist}, )
 
 # @api_view(['GET'])
 # def movie_detail(request, movie_id):

@@ -3,15 +3,22 @@
 {% block content %}
 
 <div id="watchlist">
-    <h2>{{user.username}}'s Watchlist</h2>
-  {% if watchlist_items %}
+    <h2>{{user.username}}'s Watchlists</h2>
+    {% if movies_in_watchlists %}
     <ul>
-      {% for item in watchlist_items %}
-        <li><a href="{% url 'movie_detail' item.movie.pk %}">{{ item.movie.title }}</a></li>
+      {% for watchlist, movies in movies_in_watchlists %}
+        <li>
+          <h2>{{ watchlist.name }}</h2>
+          <ul>
+            {% for movie in movies %}
+              <li>{{ movie.title }}</li>
+            {% endfor %}
+          </ul>
+        </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p>Your watchlist is empty.</p>
+    <p>You don't have any watchlists yet.</p>
   {% endif %}
 </div>
 
