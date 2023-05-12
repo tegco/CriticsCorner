@@ -84,12 +84,12 @@ body {
 #details-rating {
     padding-left: 15px;
 	#transform: rotateY(360deg);
-	display: flex;}
-    label {
+	display: flex;
+}
+#details-rating label {
         color: gold;
         font-weight: bold;
-    }
-
+}
 
 #details-rating input {
 	display: none;
@@ -110,14 +110,13 @@ body {
     padding-top: 20px;
 }
 #details-list-users-reviews{
-    padding-left: 160px;}
-
-    label {
+    padding-left: 160px;
+}
+#details-list-users-reviews label{
         color: gold;
         font-weight: bold;
         font-size: 18px;
-
-        }
+}
 
 #details-list-users-reviews-container {
     border: 2px solid #ccc;
