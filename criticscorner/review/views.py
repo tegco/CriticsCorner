@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from django.core.files.storage import FileSystemStorage
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -48,6 +49,22 @@ def loginview(request):
             return render(request, 'review/login.html', {'error_message': "Invalid username or password!"}, )
     else:
         return render(request, 'review/login.html')
+
+
+@login_required(login_url='review:loginview')
+def fazer_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        uploaded_file_url = uploaded_file_url.replace("/review/static", "")
+        request.user.reviewer.profile_picture = uploaded_file_url
+        request.user.reviewer.save()
+
+        return render(request, 'review/fazer_upload.html', {'uploaded_file_url': uploaded_file_url})
+    return render(request, 'review/fazer_upload.html')
 
 
 @login_required(login_url='review:loginview')
