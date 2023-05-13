@@ -7,9 +7,11 @@
 <body>
 
 {% block content %}
-
-<h1>Register:</h1>
-<br>
+<div class="container d-flex justify-content-center"style="margin-bottom: 10px" >
+    <h1>Register</h1>
+    <br><br><br><br>
+</div>
+<div class="container d-flex justify-content-center align-items-center h-100">
 <fieldset>
     <form action="{% url 'review:register_user' %}" method="post">
         {% csrf_token %}
@@ -25,6 +27,6 @@
         <input type="submit" value="Create account">
     </form>
 </fieldset>
-
+</div>
 {% endblock %}
 </body>
