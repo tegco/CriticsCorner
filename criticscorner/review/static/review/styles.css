@@ -330,6 +330,7 @@ ul {
     float: right;
     position: relative;
     display: inline-block;
+    border-radius: 10px;
 }
 #add-to-watchlist-form button {
     background-color: rgba(83, 157, 125, 0.99);
@@ -369,5 +370,10 @@ ul {
     display: inline-block;
     font-size: 13px;
     font-weight: normal;
+}
+#delete-watchlist button {
+    background: indianred;
+    font-size: small;
+    border-radius: 10px;
 }
 

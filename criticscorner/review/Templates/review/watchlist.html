@@ -45,8 +45,15 @@
     {% if movies_in_watchlists %}
     <div class="watchlist">
         {% for watchlist, movies in movies_in_watchlists %}
-        <h3>{{ watchlist.name }}</h3> <br><br>
-        <ul>
+        <h4 >{{ watchlist.name }}
+        <div id="delete-watchlist">
+            <form method="POST" action="{% url 'review:delete_watchlist' watchlist.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="watchlist_id" value="{{ watchlist.id }}">
+                <button type="submit">Delete</button>
+            </form>
+        </div></h4>
+        <ul >
             {% for movie in movies %}
             <li>
                 <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">

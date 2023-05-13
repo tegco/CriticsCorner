@@ -146,6 +146,13 @@ def create_watchlist(request):
 
 
 @login_required(login_url='review:loginview')
+def delete_watchlist(request, watchlist_id):
+    watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
+    watchlist.delete()
+    return redirect('review:display_watchlist')
+
+
+@login_required(login_url='review:loginview')
 def add_to_watchlist(request, movie_id):
     if request.method == 'POST':
         watchlist_id = request.POST.get('watchlist_id')
