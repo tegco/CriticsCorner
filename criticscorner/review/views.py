@@ -149,6 +149,21 @@ def add_to_watchlist(request, movie_id):
 
 
 @login_required(login_url='review:loginview')
+def delete_from_watchlist(request, movie_id, watchlist_id):
+    if request.method == 'POST':
+        watchlist_id = request.POST.get('watchlist_id')
+        watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
+        movie = Movie.objects.get(pk=movie_id)
+
+        if watchlist.movies.filter(pk=movie_id).exists():
+            watchlist.movies.remove(movie)
+            messages.success(request, 'Movie deleted from the watchlist.')
+        else:
+            messages.error(request, 'Couldn´t delete movie from watchlist!')
+    return HttpResponseRedirect(reverse('review:display_watchlist'))
+
+
+@login_required(login_url='review:loginview')
 def display_watchlist(request):
     watchlists = Watchlist.objects.filter(reviewer_id=request.user.reviewer.user_id)
     movies_in_watchlists = []
