@@ -30,6 +30,8 @@ def register_user(request):
         user = User.objects.create_user(username=username, email=email, password=password)
         rv = Reviewer(user=user)
         rv.save()
+        watchlist = Watchlist(name="Default", reviewer_id=user.reviewer.id)
+        watchlist.save()
 
         return HttpResponseRedirect(reverse('review:loginview'))  # <-- Ver se isto está bem
     else:
