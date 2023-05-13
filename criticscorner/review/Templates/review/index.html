@@ -10,46 +10,79 @@
     <title>
         {% block title %} Critic's Corner {% endblock %}
     </title>
-    <!--    {# Load the tag library #}-->
-    <!--    {% load bootstrap5 %}-->
+        {# Load the tag library #}
+        {% load bootstrap5 %}
 
-    <!--    {# Load CSS and JavaScript #}-->
-    <!--    {% bootstrap_css %}-->
-    <!--    {% bootstrap_javascript %}-->
+        {# Load CSS and JavaScript #}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
 
-    <!--    {# Display django.contrib.messages as Bootstrap alerts #}-->
-    <!--    {% bootstrap_messages %}-->
+        {# Display django.contrib.messages as Bootstrap alerts #}
+        {% bootstrap_messages %}
 </head>
 <body>
 
 <header>
-    <div id="logo">
-        <img src="{% static 'images/Logo-idea-2-removebg-preview.png' %}" alt="Critics Corner Logotype"/>
-    </div>
-    <nav>
-        {% if user.is_authenticated %}
-        <ul class="navbar">
-            <li><a href="{% url 'review:index'%}"> Home </a>|</li>
-            <li><a href="{% url 'review:top_rated' %}">Top Rated</a>|</li>
-            <li id="profile-picture-index">
+    <!--    <div id="logo">-->
+    <!--        <img src="{% static 'images/Logo-idea-2-removebg-preview.png' %}" alt="Critics Corner Logotype"/>-->
+    <!--    </div>-->
+    <nav class="navbar bg-black w-100 mx-0" data-bs-theme="dark">
+
+        <a class="navbar-brand" id="logo" href="#">
+            <img src="{% static 'images/Logo-idea-2-removebg-preview.png' %}" alt="Critics Corner Logotype"/>
+        </a>
+        <ul class="navbar-nav  flex-row">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'review:index' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'review:top_rated' %}">Top Rated</a>
+            </li>
+            {% if not user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link active"  href="{% url 'review:loginview' %}">Login</a></li>
+            {% else %}
+            <span class="navbar-text mx-3">|</span>
+            <li class="nav-item" id="Watchlist">
+                <a class="nav-link active" aria-current="page" href="{% url 'review:display_watchlist' %}">My
+                    Watchlist</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'review:logoutview'%}"> Logout</a>
+            </li>
+
+            <li class="nav-item" id="profile-picture">
                 {% if request.user.reviewer.profile_picture == "" %}
-                <img src="{% static 'images/default.png' %}">
+                <img class="rounded-circle" style="height: 50px;" src="{% static 'images/default.png' %}">
                 {% else %}
-                <img src="{% static request.user.reviewer.profile_picture %}">
+                <img class="rounded-circle" style="height: 50px;" src="{% static request.user.reviewer.profile_picture %}">
                 {% endif %}
             </li>
-            <li id="Watchlist">|<a href="{% url 'review:display_watchlist'%}"> My Watchlist</a></li>
-            <li id="username">{{ user.get_username }}</li>
-            <li>|<a href="{% url 'review:logoutview'%}"> Logout</a></li>
+            {% endif %}
         </ul>
 
-        {% else %}
-        <ul class="navbar">
-            <li><a href="{% url 'review:index'%}">Home</a></li>
-            <li><a href="{% url 'review:loginview'%}">Login</a></li>
-            <li><a href="{% url 'review:top_rated' %}">Top Rated</a></li>
-        </ul>
-        {%endif%}
+        <!--        {% if user.is_authenticated %}-->
+        <!--        <ul class="navbar">-->
+        <!--            <li><a href="{% url 'review:index'%}"> Home </a>|</li>-->
+        <!--            <li><a href="{% url 'review:top_rated' %}">Top Rated</a>|</li>-->
+        <!--            &lt;!&ndash;            <li id="profile-picture-index">&ndash;&gt;-->
+        <!--            {% if request.user.reviewer.profile_picture == "" %}-->
+        <!--            <img src="{% static 'images/default.png' %}">-->
+        <!--            {% else %}-->
+        <!--            <img src="{% static request.user.reviewer.profile_picture %}">-->
+        <!--            {% endif %}-->
+        <!--            </li>-->
+        <!--&lt;!&ndash;            <li id="Watchlist">|<a href="{% url 'review:display_watchlist'%}"> My Watchlist</a></li>&ndash;&gt;-->
+        <!--            <li id="username">{{ user.get_username }}</li>-->
+        <!--            <li>|<a href="{% url 'review:logoutview'%}"> Logout</a></li>-->
+        <!--        </ul>-->
+
+        <!--        {% else %}-->
+        <!--        <ul class="navbar">-->
+        <!--            <li><a href="{% url 'review:index'%}">Home</a></li>-->
+        <!--            <li><a href="{% url 'review:loginview'%}">Login</a></li>-->
+        <!--            <li><a href="{% url 'review:top_rated' %}">Top Rated</a></li>-->
+        <!--        </ul>-->
+        <!--        {%endif%}-->
     </nav>
 
 </header>
@@ -58,11 +91,11 @@
     {% block content %}
     {% endblock %}
 </div>
+<script defer src="{% static 'review/script.js' %}"></script>
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
-<script defer src="{% static 'review/script.js' %}"></script>
 </body>
 </html>
 

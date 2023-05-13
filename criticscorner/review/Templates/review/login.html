@@ -11,7 +11,8 @@
 <h1>Log into your account</h1>
 
 <br>
-<fieldset>
+<div class="container d-flex justify-content-center align-items-center h-100">
+    <fieldset>
     <form action="{% url 'review:loginview' %}" method="post">
         {% csrf_token %}
 
@@ -34,5 +35,7 @@
     <p id="error_message"> {{ error_message }}</p>
     {% endif %}
 </fieldset>
+
+</div>
 {% endblock %}
 </body>

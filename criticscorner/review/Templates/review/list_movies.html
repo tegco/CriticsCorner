@@ -14,13 +14,14 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ movie.title }}</h5>
                     <p class="card-text">{{ movie.year}}</p>
-                    <a href="{% static 'review:details' movie.id %}" class="btn btn-warning">See more details</a>
+                    <a href="{% url 'review:details' movie.id %}" class="btn
+                    btn-warning">See reviews</a>
+
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-
     {% else %}
     No movies were found.
     {% endif %}
