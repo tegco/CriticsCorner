@@ -156,9 +156,34 @@ body {
     font-weight: bold;
 }
 
-#watchlist {
+#watchlists {
     margin: auto;
     font-size: 16px;
+}
+
+.watchlist{
+     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.watchlist img {
+    width: 50px;
+    height: auto;
+
+}
+
+.watchlist li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 200px;
+  margin: 20px;
+}
+.delete-movie{
+    background: indianred;
+    border-radius: 10px;
+    display: inline-block;
 }
 
 html,
@@ -172,7 +197,7 @@ body {
     flex-direction: column;
 }
 
-h1, h2 {
+h1, h2, h3 {
     text-align: center;
 }
 
