@@ -60,10 +60,10 @@ def logoutview(request):
 def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
-    reviews = Review.objects.select_related('reviewer').all()\
-                            .filter(movie=movie)\
-                            .exclude(comment=None)\
-                            .order_by("likes_count")
+    reviews = Review.objects.select_related('reviewer').all() \
+        .filter(movie=movie) \
+        .exclude(comment=None) \
+        .order_by("likes_count")
     ratings_list = []
     for r in reviews:
         print(r.reviewer)
@@ -104,11 +104,11 @@ def review_movie(request, movie_id):
                 comment = None  # <-- Ver se isto é transformado para 'null' na base de dados
 
             new_review = Review(rating=rating,
-                            comment=comment,
-                            likes_count=0,
-                            created_at=timezone.now(),
-                            movie_id=movie_id,
-                            reviewer_id=request.user.reviewer.user_id)
+                                comment=comment,
+                                likes_count=0,
+                                created_at=timezone.now(),
+                                movie_id=movie_id,
+                                reviewer_id=request.user.reviewer.user_id)
             new_review.save()
 
             messages.success(request=request, message="Review successfully added!")
@@ -133,6 +133,25 @@ def list_movies(request):
     movies = Movie.objects.all()
     movie_serializer = MovieSerializer(movies, context={'request': request}, many=True)
     return Response(movie_serializer.data)
+
+
+@login_required(login_url='review:loginview')
+def create_watchlist(request):
+    if request.method == 'POST':
+        watchlist_name = request.POST.get('name')
+        reviewer = request.user.reviewer.user_id
+        watchlist = Watchlist(name=watchlist_name, reviewer_id=reviewer)
+        watchlist.save()
+        return redirect('review:display_watchlist')
+    else:
+        return redirect('review:index')
+
+
+@login_required(login_url='review:loginview')
+def delete_watchlist(request, watchlist_id):
+    watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
+    watchlist.delete()
+    return redirect('review:display_watchlist')
 
 
 @login_required(login_url='review:loginview')
@@ -194,7 +213,7 @@ def like_movie(request, review_id):
 
 def calculate_rating(movie, ratings_list):
     if len(ratings_list) > 0:
-        average = sum(ratings_list)/len(ratings_list)
+        average = sum(ratings_list) / len(ratings_list)
         movie.avg_rating = average
         movie.save()
 
