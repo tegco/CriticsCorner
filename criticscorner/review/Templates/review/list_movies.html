@@ -13,7 +13,8 @@
                 <img src="{{ movie.poster_url }}" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">{{ movie.title }}</h5>
-                    <p class="card-text">{{ movie.year}}</p>
+                    <p class="card-text">{{ movie.year }}</p>
+                    <p class="card-text">{{movie.avg_rating}} ★</p>
                     <a href="{% url 'review:details' movie.id %}" class="btn
                     btn-warning">See reviews</a>
 
