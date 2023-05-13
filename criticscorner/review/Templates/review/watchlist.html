@@ -2,27 +2,28 @@
 
 {% block content %}
 
-<div id="watchlist">
-    <h1>{{user.username}}'s Watchlists</h1> <br>
+<div id="watchlists">
+    <h1>{{user.username}}'s Watchlists</h1> <br><br>
     {% if movies_in_watchlists %}
     <div class="watchlist">
       {% for watchlist, movies in movies_in_watchlists %}
-        <div>
-          <h2>{{ watchlist.name }}</h2>
+          <h3>{{ watchlist.name }}</h3> <br><br>
           <ul>
             {% for movie in movies %}
               <li>
                   <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
-                  {{ movie.title }}
+                  <a href="{% url 'review:details' movie.id %}">{{ movie.title }}</a>
+
+
+                  <button class="delete-movie" data-watchlist="{{ watchlist.id }}" data-movie="{{ movie.id }}">Delete</button>
               </li>
             {% endfor %}
           </ul>
-        </li>
       {% endfor %}
     </ul>
-        </div>
   {% else %}
     <p>You don't have any watchlists yet.</p>
+    </div>
   {% endif %}
 </div>
 
