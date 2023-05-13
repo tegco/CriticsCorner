@@ -70,12 +70,17 @@ body {
 #details-info h1,h2 {
     text-align: left;
 }
+
+#details-info form {
+    display: none;
+}
 #details-info form, button {
-    margin-left:75%;
+    #margin-left:75%;
     background-color: rgba(255, 255, 255, 0);
     font-size: 15px;
     color: rgb(255, 255, 255);
     font-weight: bold;
+    #display: none;
 }
 
 #details-info button {
@@ -83,8 +88,8 @@ body {
         margin-left: auto;
         color: rgb(255, 255, 255);
         font-size: 14px;
-    border-radius: 5px;
-    padding-inline: 5px;
+        border-radius: 5px;
+        padding-inline: 5px;
 }
 #basic-info li {
     font-weight: bold;}
@@ -159,6 +164,13 @@ body {
 #watchlists {
     margin: auto;
     font-size: 16px;
+}
+#add-to-watchlist-form button {
+    background-color: rgba(38, 121, 85, 0.72);
+    border: 2px solid black;
+    #border-color: green;
+    color: #ffffff;
+    margin-left: 25px;
 }
 
 .watchlist{
