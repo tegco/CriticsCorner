@@ -166,11 +166,10 @@ body {
     font-size: 16px;
 }
 #add-to-watchlist-form button {
-    background-color: rgba(38, 121, 85, 0.72);
-    border: 2px solid black;
-    #border-color: green;
+    background-color: rgba(83, 157, 125, 0.99);
     color: #ffffff;
     margin-left: 25px;
+    margin-top: 8px;
 }
 
 .watchlist{
@@ -181,7 +180,6 @@ body {
 .watchlist img {
     width: 50px;
     height: auto;
-
 }
 
 .watchlist li {
