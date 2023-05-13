@@ -138,20 +138,23 @@ def list_movies(request):
 @login_required(login_url='review:loginview')
 def create_watchlist(request):
     if request.method == 'POST':
+
         watchlist_name = request.POST.get('name')
         reviewer = request.user.reviewer.user_id
         watchlist = Watchlist(name=watchlist_name, reviewer_id=reviewer)
         watchlist.save()
-        return redirect('review:display_watchlist')
+        messages.success(request=request, message="Watchlist successfully added!")
+        return HttpResponseRedirect(reverse('review:display_watchlist'))
     else:
-        return redirect('review:index')
+        return render(request, 'review/watchlist.html')
 
 
 @login_required(login_url='review:loginview')
 def delete_watchlist(request, watchlist_id):
     watchlist = get_object_or_404(Watchlist, pk=watchlist_id)
     watchlist.delete()
-    return redirect('review:display_watchlist')
+    messages.success(request=request, message="Watchlist successfully deleted!")
+    return HttpResponseRedirect(reverse('review:display_watchlist'))
 
 
 @login_required(login_url='review:loginview')
@@ -162,11 +165,14 @@ def add_to_watchlist(request, movie_id):
         movie = Movie.objects.get(pk=movie_id)
 
         if watchlist.movies.filter(pk=movie_id).exists():
-            messages.warning(request, 'Movie is already in the watchlist.')
+            messages.warning(request, 'Movie is already in the watchlist!')
+            return HttpResponseRedirect(reverse('review:details', args=(movie.id,)))
         else:
             watchlist.movies.add(movie)
             messages.success(request, 'Movie successfully added!')
-    return HttpResponseRedirect(reverse('review:review_movie', args=(movie.id,)))
+        return HttpResponseRedirect(reverse('review:details', args=(movie.id,)))
+    else:
+        return render(request, 'review/details.html')
 
 
 @login_required(login_url='review:loginview')
@@ -179,9 +185,11 @@ def delete_from_watchlist(request, movie_id, watchlist_id):
         if watchlist.movies.filter(pk=movie_id).exists():
             watchlist.movies.remove(movie)
             messages.success(request, 'Movie deleted from the watchlist.')
+            return HttpResponseRedirect(reverse('review:display_watchlist'))
         else:
             messages.error(request, 'Couldn´t delete movie from watchlist!')
-    return HttpResponseRedirect(reverse('review:display_watchlist'))
+            return render(request, 'review/watchlist.html')
+    return render(request, 'review/watchlist.html')
 
 
 @login_required(login_url='review:loginview')
@@ -191,7 +199,6 @@ def display_watchlist(request):
     for watchlist in watchlists:
         movies = watchlist.movies.all()
         movies_in_watchlists.append((watchlist, movies))
-
     return render(request, 'review/watchlist.html', {'movies_in_watchlists': movies_in_watchlists})
 
 
