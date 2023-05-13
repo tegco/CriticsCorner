@@ -64,8 +64,11 @@ def details(request, movie_id):
                             .filter(movie=movie)\
                             .exclude(comment=None)\
                             .order_by("likes_count")
+    ratings_list = []
     for r in reviews:
         print(r.reviewer)
+        ratings_list.append(r.rating)
+    calculate_rating(movie, ratings_list)
     try:
         watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.user_id)
     except Watchlist.DoesNotExist:
@@ -182,6 +185,15 @@ def like_movie(request, review_id):
     review.likes_count = current_likes
     review.save()
     return HttpResponseRedirect(reverse('review:review_movie', args=(review.movie.id,)))
+
+
+def calculate_rating(movie, ratings_list):
+    if len(ratings_list) > 0:
+        average = sum(ratings_list)/len(ratings_list)
+        movie.avg_rating = average
+        movie.save()
+
+
 
 
 # @api_view(['GET'])
