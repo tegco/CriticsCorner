@@ -97,22 +97,27 @@ def review_movie(request, movie_id):
         messages.error(request=request, message="Fields missing")
         return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
-    if rating:
-        if not comment or comment == "":
-            comment = None  # <-- Ver se isto é transformado para 'null' na base de dados
+    already_reviewed = Review.objects.filter(movie=movie, reviewer=request.user.reviewer).count()
+    if not already_reviewed:
+        if rating:
+            if not comment or comment == "":
+                comment = None  # <-- Ver se isto é transformado para 'null' na base de dados
 
-        new_review = Review(rating=rating,
+            new_review = Review(rating=rating,
                             comment=comment,
                             likes_count=0,
                             created_at=timezone.now(),
                             movie_id=movie_id,
                             reviewer_id=request.user.reviewer.user_id)
-        new_review.save()
+            new_review.save()
 
-        messages.success(request=request, message="Review successfully added!")
+            messages.success(request=request, message="Review successfully added!")
+            return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
+
+        messages.error(request=request, message="Review does not have a rating.")
         return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
-    messages.error(request=request, message="Review does not have a rating.")
+    messages.error(request=request, message="You already reviewed this movie.")
     return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
 
@@ -192,8 +197,6 @@ def calculate_rating(movie, ratings_list):
         average = sum(ratings_list)/len(ratings_list)
         movie.avg_rating = average
         movie.save()
-
-
 
 
 # @api_view(['GET'])
