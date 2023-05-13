@@ -111,7 +111,7 @@
     {% if reviews %}
     <label>Reviews</label> <br>
     {% for review in reviews %}
-    <div id="details-list-users-reviews-container">
+    <div id="details-list-users-reviews-container" {% if review.reviewer.is_critic %} style="border-color: gold" {% endif %}>
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex flex-row align-items-center">
                 {% if review.reviewer.profile_picture == "" %}
@@ -154,7 +154,7 @@
                         <input type="submit" value="Delete review" style="background-color: rgb(187, 70, 70)">
                     </form>
                     {% endif %}
-                    {% if not review.is_critic_approved and request.user.reviewer.is_critic %}
+                    {% if not review.is_critic_approved and request.user.reviewer.is_critic and not review.reviewer.is_critic %}
                     <button type="button" class="btn btn-success">Approve review</button>
                     {% endif %}
                 </div>
