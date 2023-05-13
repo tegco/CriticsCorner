@@ -9,6 +9,8 @@ class Reviewer(models.Model):
                                    related_name='liked_by')  # significa que o modelo Like é usado p/ gerir a relação Reviewer-Review
     reviews = models.ManyToManyField("Review", through='Rating', related_name='rated_by')
     profile_picture = models.CharField(max_length=100)
+    is_critic = models.BooleanField(default=False)
+    is_blocked = models.BooleanField(default=False)
 
 
 class Movie(models.Model):
@@ -21,7 +23,6 @@ class Movie(models.Model):
     poster_url = models.URLField()
     genres = models.CharField(max_length=100)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
-    watchlists = models.ManyToManyField("Watchlist")
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""
@@ -38,7 +39,7 @@ class Review(models.Model):
     likes = models.ManyToManyField(Reviewer, related_name="liked_reviews")
     created_at = models.DateTimeField(
         auto_now_add=True)  # timestamp para a publicação da review -> não pode ser modificado
-
+    is_critic_approved = models.BooleanField(default=False)
     # updated_at = models.DateTimeField(auto_now=True) #quando a review é alterada, pode-se dar update a esta data
 
     class Meta:  # Um reviewer só pode deixar uma review em cada filme
