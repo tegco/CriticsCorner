@@ -1,77 +1,103 @@
 {% extends 'review/index.html' %}
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-     {% load static %}
+    {% load static %}
     {% block title %} Watchlists {% endblock %}
 </head>
 
 <body>
 {% block content %}
-
-<div id="watchlists">
-    <h1>{{user.username}}'s Watchlists</h1> <br>
-    <div id ="create-new-watchlist">
-        <button id="create-watchlist-btn">Create Watchlist</button>
-        <div id="create-watchlist-modal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h5>Create new Watchlist</h5> <br>
-                <form id="create-watchlist-form" method="POST" action="{% url 'review:create_watchlist' %}">
-                    {% csrf_token %}
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                    <button type="submit">Create</button>
-                </form>
-            </div>
+<div class="flex-container align-items-center row ">
+    <div class="card d-flex flex-row justify-content-between rounded" style="width: 75%">
+        <div class="col-sm-3 d-inline-flex">
+            {% if user.reviewer.profile_picture == "" %}
+            <img src="{% static 'images/default.png' %}" class="rounded-circle mr-2">
+            {% else %}
+            <img src="{% static review.reviewer.profile_picture %}" class="rounded-circle mr-2">
+            {% endif %}
         </div>
-        <script>
-            const createWatchlistBtn = document.getElementById('create-watchlist-btn');
-            const createWatchlistModal = document.getElementById('create-watchlist-modal');
-            const closeModal = document.getElementsByClassName('close')[0];
-
-            createWatchlistBtn.onclick = function () {
-                createWatchlistModal.style.display = "block";
-                createWatchlistModal.style.position = "absolute";
-                createWatchlistModal.style.top = createWatchlistBtn.offsetTop + createWatchlistBtn.offsetHeight + "px";
-                createWatchlistModal.style.left = createWatchlistBtn.offsetLeft + "px";
-            }
-            closeModal.onclick = function () {
-                createWatchlistModal.style.display = "none";
-            }
-        </script>
+        <div class="col-sm-7 flex-grow-1" style="padding: 20px">
+            <h2>{{ user.username }}'s Profile</h2>
+            <h4>Email: </h4> <h6>{{ user.email}}</h6>
+            <h4>Date you joined our website: </h4> <h6>{{ user.date_joined}}</h6>
+            <h4>Change profile picture: </h4>
+            <form method="post" enctype="multipart/form-data" action="{% url 'review:upload_picture' %}">
+        {% csrf_token %}
+        <input type="file" name="myfile">
+        <input type="submit" value="Upload">
+    </form>
+        </div>
     </div>
 
 
-    {% if movies_in_watchlists %}
-    <div class="watchlist">
-        {% for watchlist, movies in movies_in_watchlists %}
-        <h4 >{{ watchlist.name }}
-        <div id="delete-watchlist">
-            <form method="POST" action="{% url 'review:delete_watchlist' watchlist.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="watchlist_id" value="{{ watchlist.id }}">
-                <button type="submit">Delete</button>
-            </form>
-        </div></h4>
-        <ul >
-            {% for movie in movies %}
-            <li>
-                <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
-                <a href="{% url 'review:details' movie.id %}">{{ movie.title }}</a>
-                <form method="POST" action="{% url 'review:delete_from_watchlist' watchlist.id movie.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="watchlist_id" value="{{ watchlist.id }}">
-                    <button class="delete-movie" type="submit">Delete</button>
-                </form>
-            </li>
-            {% endfor %}
-        </ul>
-        {% endfor %}
-        </ul>
-        {% else %}
-        <p>You don't have any watchlists yet.</p>
+    <div class="container">
+        <div id="watchlists">
+            <h1>{{user.username}}'s Watchlists</h1> <br>
+            <div id="create-new-watchlist">
+                <button id="create-watchlist-btn">Create Watchlist</button>
+                <div id="create-watchlist-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h5>Create new Watchlist</h5> <br>
+                        <form id="create-watchlist-form" method="POST" action="{% url 'review:create_watchlist' %}">
+                            {% csrf_token %}
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required>
+                            <button type="submit">Create</button>
+                        </form>
+                    </div>
+                </div>
+                <script>
+                    const createWatchlistBtn = document.getElementById('create-watchlist-btn');
+                    const createWatchlistModal = document.getElementById('create-watchlist-modal');
+                    const closeModal = document.getElementsByClassName('close')[0];
+
+                    createWatchlistBtn.onclick = function () {
+                        createWatchlistModal.style.display = "block";
+                        createWatchlistModal.style.position = "absolute";
+                        createWatchlistModal.style.top = createWatchlistBtn.offsetTop + createWatchlistBtn.offsetHeight + "px";
+                        createWatchlistModal.style.left = createWatchlistBtn.offsetLeft + "px";
+                    }
+                    closeModal.onclick = function () {
+                        createWatchlistModal.style.display = "none";
+                    }
+                </script>
+            </div>
+
+
+            {% if movies_in_watchlists %}
+            <div class="watchlist">
+                {% for watchlist, movies in movies_in_watchlists %}
+                <h4>{{ watchlist.name }}
+                    <div id="delete-watchlist">
+                        <form method="POST" action="{% url 'review:delete_watchlist' watchlist.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="watchlist_id" value="{{ watchlist.id }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </h4>
+                <ul>
+                    {% for movie in movies %}
+                    <li>
+                        <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+                        <a href="{% url 'review:details' movie.id %}">{{ movie.title }}</a>
+                        <form method="POST" action="{% url 'review:delete_from_watchlist' watchlist.id movie.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="watchlist_id" value="{{ watchlist.id }}">
+                            <button class="delete-movie" type="submit">Delete</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+                </ul>
+                {% else %}
+                <p>You don't have any watchlists yet.</p>
+            </div>
+            {% endif %}
+        </div>
     </div>
-    {% endif %}
 </div>
 {% endblock %}
 </body>

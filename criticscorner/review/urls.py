@@ -26,6 +26,7 @@ urlpatterns = [
     # Para apagar uma review
     path('<int:review_id>/delete_review', views.delete_review, name='delete_review'),
     path('topRated', views.send_to_front_end, name="top_rated"),
+    path('uploadPicture', views.upload_picture, name="upload_picture"),
     # Views de react
     # Para listar todos os  movies (página principal)
     path('api/movies', views.list_movies, name='list_movies'),

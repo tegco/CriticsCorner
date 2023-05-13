@@ -34,9 +34,6 @@
             <li class="nav-item me-auto">
                 <a class="nav-link active" aria-current="page" href="{% url 'review:index' %}">Home</a>
             </li>
-            <li class="nav-item me-auto">
-                <a class="nav-link active" aria-current="page" href="{% url 'review:top_rated' %}">Top Rated</a>
-            </li>
         </ul>
         <ul class="navbar-nav  flex-row ">
             {% if not user.is_authenticated %}
@@ -49,7 +46,7 @@
             <span class="navbar-text mx-3">|</span>
             <li class="nav-item" id="Watchlist">
                 <a class="nav-link active" aria-current="page" href="{% url 'review:display_watchlist' %}">My
-                    Watchlist</a>
+                    Profile</a>
             </li>
             <li class="navbar-text text-white">
                 {{ request.user.username }}

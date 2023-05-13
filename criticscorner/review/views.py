@@ -33,9 +33,9 @@ def register_user(request):
         watchlist = Watchlist(name="Default", reviewer_id=user.reviewer.id)
         watchlist.save()
 
-        return HttpResponseRedirect(reverse('review:loginview'))  # <-- Ver se isto está bem
+        return HttpResponseRedirect(reverse('review:loginview'))
     else:
-        return render(request, 'review/registeruser.html')  # <-- Mudar nome do template
+        return render(request, 'review/registeruser.html')
 
 
 def loginview(request):
@@ -54,7 +54,17 @@ def loginview(request):
 
 
 @login_required(login_url='review:loginview')
-def fazer_upload(request):
+def upload_picture(request):
+    watchlists = Watchlist.objects.filter(reviewer_id=request.user.reviewer.id)
+    movies_in_watchlists = []
+    for watchlist in watchlists:
+        movies = watchlist.movies.all()
+        movies_in_watchlists.append((watchlist, movies))
+
+    context = {
+        'movies_in_watchlists': movies_in_watchlists
+    }
+
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
 
@@ -65,8 +75,19 @@ def fazer_upload(request):
         request.user.reviewer.profile_picture = uploaded_file_url
         request.user.reviewer.save()
 
-        return render(request, 'review/fazer_upload.html', {'uploaded_file_url': uploaded_file_url})
-    return render(request, 'review/fazer_upload.html')
+        try:
+            watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.id)
+        except Watchlist.DoesNotExist:
+            watchlists = None
+
+        context = {
+            'uploaded_file_url': uploaded_file_url,
+            'movies_in_watchlists': movies_in_watchlists
+        }
+
+        return render(request, 'review/watchlist.html', context)
+
+    return render(request, 'review/watchlist.html', context)
 
 
 @login_required(login_url='review:loginview')
@@ -77,7 +98,6 @@ def logoutview(request):
 
 @login_required(login_url='review:loginview')
 def details(request, movie_id):
-    # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.select_related('reviewer').all() \
         .filter(movie=movie) \
@@ -258,7 +278,7 @@ def calculate_rating(movie, ratings_list):
 
 @api_view(['GET'])
 def list_movies(request):
-    movies= Movie.objects.prefetch_related('reviews_received').filter(reviews_received__isnull=False).distinct()
+    movies = Movie.objects.prefetch_related('reviews_received').filter(reviews_received__isnull=False).distinct()
     movie_serializer = MovieSerializer(movies, context={'request': request}, many=True)
     return Response(movie_serializer.data)
 
