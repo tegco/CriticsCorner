@@ -70,7 +70,7 @@ def details(request, movie_id):
         ratings_list.append(r.rating)
     calculate_rating(movie, ratings_list)
     try:
-        watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.user_id)
+        watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.id)
     except Watchlist.DoesNotExist:
         watchlists = None
 
@@ -108,7 +108,7 @@ def review_movie(request, movie_id):
                                 likes_count=0,
                                 created_at=timezone.now(),
                                 movie_id=movie_id,
-                                reviewer_id=request.user.reviewer.user_id)
+                                reviewer_id=request.user.reviewer.id)
             new_review.save()
 
             messages.success(request=request, message="Review successfully added!")
@@ -146,7 +146,7 @@ def list_movies(request):
 def create_watchlist(request):
     if request.method == 'POST':
         watchlist_name = request.POST.get('name')
-        reviewer = request.user.reviewer.user_id
+        reviewer = request.user.reviewer.id
         watchlist = Watchlist(name=watchlist_name, reviewer_id=reviewer)
         watchlist.save()
         messages.success(request=request, message="Watchlist successfully added!")
@@ -200,7 +200,7 @@ def delete_from_watchlist(request, movie_id, watchlist_id):
 
 @login_required(login_url='review:loginview')
 def display_watchlist(request):
-    watchlists = Watchlist.objects.filter(reviewer_id=request.user.reviewer.user_id)
+    watchlists = Watchlist.objects.filter(reviewer_id=request.user.reviewer.id)
     movies_in_watchlists = []
     for watchlist in watchlists:
         movies = watchlist.movies.all()
