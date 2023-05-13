@@ -17,7 +17,7 @@ from .serializers import *
 
 
 def index(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.all().order_by("-avg_rating")
     return render(request, 'review/list_movies.html', {'movies': movies})
 
 
@@ -80,7 +80,7 @@ def details(request, movie_id):
     reviews = Review.objects.select_related('reviewer').all() \
         .filter(movie=movie) \
         .exclude(comment=None) \
-        .order_by("is_critic_approved", "likes_count")
+        .order_by("-is_critic_approved", "-likes_count")
     ratings_list = []
     for r in reviews:
         print(r.reviewer)
@@ -150,13 +150,6 @@ def delete_movie(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     movie.delete()
     return HttpResponseRedirect(reverse('review:index'))
-
-
-@api_view(['GET'])
-def list_movies(request):
-    movies = Movie.objects.select_related('reviews_received').all()
-    movie_serializer = MovieSerializer(movies, context={'request': request}, many=True)
-    return Response(movie_serializer.data)
 
 
 @login_required(login_url='review:loginview')
@@ -241,6 +234,16 @@ def like_movie(request, review_id):
     return HttpResponseRedirect(reverse('review:review_movie', args=(review.movie.id,)))
 
 
+def approve_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    if not review.is_critic_approved:
+        review.is_critic_approved = True
+        review.save()
+
+    messages.success(request, "Review approved successfully")
+    return HttpResponseRedirect(reverse('review:review_movie', args=(review.movie_id,)))
+
+
 def calculate_rating(movie, ratings_list):
     if len(ratings_list) > 0:
         average = sum(ratings_list) / len(ratings_list)
@@ -251,6 +254,13 @@ def calculate_rating(movie, ratings_list):
         movie.save()
 
 
+@api_view(['GET'])
+def list_movies(request):
+    movies= Movie.objects.prefetch_related('reviews_received').filter(reviews_received__isnull=False).distinct()
+    movie_serializer = MovieSerializer(movies, context={'request': request}, many=True)
+    return Response(movie_serializer.data)
+
+
 # @api_view(['GET'])
 # def movie_detail(request, movie_id):
 #     try:
@@ -259,13 +269,3 @@ def calculate_rating(movie, ratings_list):
 #         return Response(status=status.HTTP_404_NOT_FOUND)
 def send_to_front_end(request):
     return HttpResponseRedirect('http://localhost:3000/')  # Redireciona ao react
-
-
-def approve_review(request, review_id):
-    review = get_object_or_404(Review, pk=review_id)
-    if not review.is_critic_approved:
-        review.is_critic_approved = True
-        review.save()
-
-    messages.success(request, "Review approved successfully")
-    return HttpResponseRedirect(reverse('review:review_movie', args=(review.movie_id,)))
