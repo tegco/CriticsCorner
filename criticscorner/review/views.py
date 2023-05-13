@@ -63,7 +63,7 @@ def details(request, movie_id):
     reviews = Review.objects.select_related('reviewer').all() \
         .filter(movie=movie) \
         .exclude(comment=None) \
-        .order_by("likes_count")
+        .order_by("is_critic_approved", "likes_count")
     ratings_list = []
     for r in reviews:
         print(r.reviewer)
@@ -137,7 +137,7 @@ def delete_movie(request, movie_id):
 
 @api_view(['GET'])
 def list_movies(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.select_related('reviews_received').all()
     movie_serializer = MovieSerializer(movies, context={'request': request}, many=True)
     return Response(movie_serializer.data)
 
@@ -233,3 +233,13 @@ def calculate_rating(movie, ratings_list):
 #         return Response(status=status.HTTP_404_NOT_FOUND)
 def send_to_front_end(request):
     return HttpResponseRedirect('http://localhost:3000/')  # Redireciona ao react
+
+
+def approve_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    if not review.is_critic_approved:
+        review.is_critic_approved = True
+        review.save()
+
+    messages.success(request, "Review approved successfully")
+    return HttpResponseRedirect(reverse('review:review_movie', args=(review.movie_id,)))

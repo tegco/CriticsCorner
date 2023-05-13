@@ -155,7 +155,9 @@
                     </form>
                     {% endif %}
                     {% if not review.is_critic_approved and request.user.reviewer.is_critic and not review.reviewer.is_critic %}
-                    <button type="button" class="btn btn-success">Approve review</button>
+                    <a href="{% url 'review:approve_review' review.id %}">
+                        <button type="button" class="btn btn-success">Approve Review</button>
+                    </a>
                     {% endif %}
                 </div>
             </div>

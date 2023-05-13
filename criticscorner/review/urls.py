@@ -19,9 +19,11 @@ urlpatterns = [
     path('<int:movie_id>/delete_movie', views.delete_movie, name='delete_movie'),
     # Para fazer POST de uma review
     path('<int:movie_id>/review', views.review_movie, name='review_movie'),
-    #Para dar like a uma review
+    # Para os critics aprovarem uma review
+    path('<int:review_id>/approve', views.approve_review, name='approve_review'),
+    # Para dar like a uma review
     path('<int:review_id>/like', views.like_movie, name='like_movie'),
-    #Para apagar uma review
+    # Para apagar uma review
     path('<int:review_id>/delete_review', views.delete_review, name='delete_review'),
     path('topRated', views.send_to_front_end, name="top_rated"),
     # Views de react
