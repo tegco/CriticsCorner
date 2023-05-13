@@ -134,6 +134,18 @@ def list_movies(request):
 
 
 @login_required(login_url='review:loginview')
+def create_watchlist(request):
+    if request.method == 'POST':
+        watchlist_name = request.POST.get('name')
+        reviewer = request.user.reviewer.user_id
+        watchlist = Watchlist(name=watchlist_name, reviewer_id=reviewer)
+        watchlist.save()
+        return redirect('review:display_watchlist')
+    else:
+        return redirect('review:index')
+
+
+@login_required(login_url='review:loginview')
 def add_to_watchlist(request, movie_id):
     if request.method == 'POST':
         watchlist_id = request.POST.get('watchlist_id')

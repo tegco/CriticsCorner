@@ -9,6 +9,7 @@ urlpatterns = [
     path('register', views.register_user, name='register_user'),
     path('logout', views.logoutview, name='logoutview'),
     path('login', views.loginview, name='loginview'),
+    path('watchlist/create/', views.create_watchlist, name='create_watchlist'),
     path('watchlist/add/<int:movie_id>/', views.add_to_watchlist, name='add_to_watchlist'),
     path('watchlist/<int:watchlist_id>/delete/<int:movie_id>/', views.delete_from_watchlist, name='delete_from_watchlist'),
     path('watchlists', views.display_watchlist, name='display_watchlist'),

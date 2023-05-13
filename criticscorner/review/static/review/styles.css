@@ -43,7 +43,7 @@ nav ul li {
     font-size: 18px;
     font-weight: bold;
 }
-nav .navbar img{
+nav .navbar img {
   width: 50px;
   height: auto;
   margin: -32px -5px;
@@ -185,6 +185,8 @@ ul {
     padding: 10px;
     font-size: 15px;
 }
+
+#--------------------------------------------,
 .details-card {
     display: flex;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -304,13 +306,11 @@ ul {
     width: 85%;
 }
 
-/* Clear floats after containers */
 #details-list-users-reviews-container::after {
   content: "";
   clear: both;
   display: table;
 }
-/* Increase the font-size of a span element */
 #details-list-users-reviews-container span {
   font-size: 14px;
   margin-right: 15px;
@@ -319,6 +319,17 @@ ul {
 #watchlists {
     margin: auto;
     font-size: 16px;
+    align-items: center;
+    text-align: center;
+}
+
+#create-new-watchlist button{
+    background-color: rgba(83, 157, 125, 0.99);
+    margin-bottom: 25px;
+    margin-right: 45px;
+    float: right;
+    position: relative;
+    display: inline-block;
 }
 #add-to-watchlist-form button {
     background-color: rgba(83, 157, 125, 0.99);
@@ -343,16 +354,20 @@ ul {
   width: 200px;
   margin: 20px;
 }
+.modal {
+    position: absolute;
+  transform: translate(-50%, -15%);
+}
+.modal-content {
+    max-width: 350px;
+  max-height: 225px;
+}
+
 .delete-movie{
     background: indianred;
     border-radius: 8px;
     display: inline-block;
     font-size: 13px;
     font-weight: normal;
-}
-#error_message {
-    color: red;
-    font-weight: bold;
-    text-align: center;
 }
 
