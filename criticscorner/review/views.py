@@ -121,6 +121,13 @@ def review_movie(request, movie_id):
     return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
 
+@permission_required('auth.delete_review')
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    review.delete()
+    return HttpResponseRedirect(reverse('review:details', args=(review.movie.id,)))
+
+
 @permission_required('auth.delete_movie')
 def delete_movie(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)

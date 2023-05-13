@@ -143,6 +143,13 @@
             <a href="{% url 'review:like_movie' review_id=review.id %}">
                 <img src="{% static 'images/like.png' %}" alt="Like img" style="height: 15px"/>
             </a>
+            {% if user.is_superuser %}
+            <div class="buttons-container">
+            <form action="{% url 'review:delete_review' review.id %}">
+                <input type="submit" value="Delete review" style="background-color: rgb(187, 70, 70)">
+            </form>
+            </div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
