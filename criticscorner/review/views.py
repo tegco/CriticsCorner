@@ -60,7 +60,12 @@ def logoutview(request):
 def details(request, movie_id):
     # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
-    reviews = Review.objects.filter(movie=movie)
+    reviews = Review.objects.select_related('reviewer').all()\
+                            .filter(movie=movie)\
+                            .exclude(comment=None)\
+                            .order_by("likes_count")
+    for r in reviews:
+        print(r.reviewer)
     try:
         watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.user_id)
     except Watchlist.DoesNotExist:
@@ -78,17 +83,6 @@ def details(request, movie_id):
 def review_movie(request, movie_id):
     # # Ver se o objeto movie tem acesso a todas as reviews
     movie = get_object_or_404(Movie, pk=movie_id)
-    # reviews = Review.objects.filter(movie=movie)
-    # try:
-    #     watchlists = Watchlist.objects.filter(reviewer=request.user.reviewer.user_id)
-    # except Watchlist.DoesNotExist:
-    #     watchlists = None
-    #
-    # context = {
-    #     'movie': movie,
-    #     'reviews': reviews,
-    #     'watchlists': watchlists
-    # }
 
     if request.method != 'POST':
         return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
@@ -98,7 +92,7 @@ def review_movie(request, movie_id):
         comment = request.POST['comment']
     except KeyError:
         messages.error(request=request, message="Fields missing")
-        return render(request, 'review/details.html', {'movie': movie, 'error_message': "Fields missing."})
+        return HttpResponseRedirect(reverse('review:details', args=(movie_id,)))
 
     if rating:
         if not comment or comment == "":

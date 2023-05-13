@@ -10,15 +10,15 @@
     <title>
         {% block title %} Critic's Corner {% endblock %}
     </title>
-        {# Load the tag library #}
-        {% load bootstrap5 %}
+    {# Load the tag library #}
+    {% load bootstrap5 %}
 
-        {# Load CSS and JavaScript #}
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 
-        {# Display django.contrib.messages as Bootstrap alerts #}
-        {% bootstrap_messages %}
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
 </head>
 <body>
 
@@ -39,7 +39,7 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'review:top_rated' %}">Top Rated</a>
             </li>
             {% if not user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link active"  href="{% url 'review:loginview' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url 'review:loginview' %}">Login</a></li>
             {% else %}
             <span class="navbar-text mx-3">|</span>
             <li class="nav-item" id="Watchlist">
@@ -54,40 +54,24 @@
                 {% if request.user.reviewer.profile_picture == "" %}
                 <img class="rounded-circle" style="height: 50px;" src="{% static 'images/default.png' %}">
                 {% else %}
-                <img class="rounded-circle" style="height: 50px;" src="{% static request.user.reviewer.profile_picture %}">
+                <img class="rounded-circle" style="height: 50px;"
+                     src="{% static request.user.reviewer.profile_picture %}">
                 {% endif %}
             </li>
             {% endif %}
         </ul>
-
-        <!--        {% if user.is_authenticated %}-->
-        <!--        <ul class="navbar">-->
-        <!--            <li><a href="{% url 'review:index'%}"> Home </a>|</li>-->
-        <!--            <li><a href="{% url 'review:top_rated' %}">Top Rated</a>|</li>-->
-        <!--            &lt;!&ndash;            <li id="profile-picture-index">&ndash;&gt;-->
-        <!--            {% if request.user.reviewer.profile_picture == "" %}-->
-        <!--            <img src="{% static 'images/default.png' %}">-->
-        <!--            {% else %}-->
-        <!--            <img src="{% static request.user.reviewer.profile_picture %}">-->
-        <!--            {% endif %}-->
-        <!--            </li>-->
-        <!--&lt;!&ndash;            <li id="Watchlist">|<a href="{% url 'review:display_watchlist'%}"> My Watchlist</a></li>&ndash;&gt;-->
-        <!--            <li id="username">{{ user.get_username }}</li>-->
-        <!--            <li>|<a href="{% url 'review:logoutview'%}"> Logout</a></li>-->
-        <!--        </ul>-->
-
-        <!--        {% else %}-->
-        <!--        <ul class="navbar">-->
-        <!--            <li><a href="{% url 'review:index'%}">Home</a></li>-->
-        <!--            <li><a href="{% url 'review:loginview'%}">Login</a></li>-->
-        <!--            <li><a href="{% url 'review:top_rated' %}">Top Rated</a></li>-->
-        <!--        </ul>-->
-        <!--        {%endif%}-->
     </nav>
 
 </header>
 
 <div class="main-container">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     {% block content %}
     {% endblock %}
 </div>
