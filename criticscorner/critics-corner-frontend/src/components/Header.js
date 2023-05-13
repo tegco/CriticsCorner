@@ -9,6 +9,7 @@ import {
   NavLink,
   NavbarText,
 } from "reactstrap";
+import logo from "../images/Logo-idea-2-removebg-preview.png";
 
 function Header(args) {
   const [isOpen, setIsOpen] = useState(true);
@@ -17,32 +18,24 @@ function Header(args) {
 
   return (
     <div>
-      <Navbar {...args} className="my-2" color="dark" dark>
+      <Navbar {...args} className="my-2" color="black" dark>
         <NavbarBrand href="/">
           <img
-            src="https://www.northstar-alliance.org/wp-content/uploads/2015/07/movie-icon.png"
+            src={logo}
             style={{
-              height: 50,
-              width: 50,
+              height: 80,
               padding: 5,
             }}
           />
-          Critic's Corner
+          Top Rated
         </NavbarBrand>
         <Nav className="me-auto" navbar>
           <NavItem>
-            <NavLink href="/Top250">Top 250</NavLink>
+            <NavLink href="http://localhost:8000">
+              Home
+            </NavLink>
           </NavItem>
-          {/* <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">
-                GitHub
-              </NavLink>
-            </NavItem> */}
         </Nav>
-        <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="me-auto" navbar></Nav> 
-        </Collapse>
       </Navbar>
     </div>
   );

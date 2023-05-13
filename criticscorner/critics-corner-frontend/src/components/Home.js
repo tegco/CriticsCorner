@@ -3,31 +3,36 @@ import { Container } from "reactstrap";
 import axios from "axios";
 
 import { API_URL_MOVIES } from "../constants"; 
+import DisplayMovies from "./DisplayMovies";
 
 
 function Home() {
-    class Home extends Component {  //(14)
-        state = {    //(15)
-          questoes: []
+    class Home extends Component {  
+        state = {    
+          movies: []
         };
       
-        componentDidMount() {    //(16)
+        componentDidMount() {    
           this.resetState();
         }
       
         getMovies = () => {
-          axios.get(API_URL_MOVIES).then(res => this.setState({ movies:
-      res.data }));    //(17)
+          axios.get(API_URL_MOVIES).then(res => {
+            console.log("TESTE 2")
+            console.log(res.data)
+            this.setState({ movies: res.data })});    
+           
         };
 
         resetState = () => {   
-        //   this.getMovies();
+          console.log("TESTE 1")
+          this.getMovies();
         };
       
         render() {
           return (
-            <Container style={{ marginTop: "20px" }}>
-                <h1>hi</h1>
+            <Container style={{ marginTop: "100px" }}>
+                {/* <DisplayMovies movies={this.state.movies} /> */}
             </Container>
           );
         }

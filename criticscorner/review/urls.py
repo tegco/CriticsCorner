@@ -18,8 +18,8 @@ urlpatterns = [
     path('<int:movie_id>/review', views.review_movie, name='review_movie'),
     #Para dar like a uma review
     path('<int:review_id>/like', views.like_movie, name='like_movie'),
-
+    path('topRated', views.send_to_front_end, name="top_rated"),
     # Views de react
     # Para listar todos os  movies (página principal)
-    path('api/movies/', views.list_movies, name='list_movies'),
+    path('api/movies', views.list_movies, name='list_movies'),
 ]

@@ -16,8 +16,8 @@ from .serializers import *
 
 
 def index(request):
-    # return HttpResponseRedirect('http://localhost:3000/')  # para depois redirecionar ao react
-    return render(request, 'review/index.html')
+    movies = Movie.objects.all()
+    return render(request, 'review/list_movies.html', {'movies': movies})
 
 
 def register_user(request):
@@ -174,9 +174,12 @@ def like_movie(request, review_id):
     review.save()
     return HttpResponseRedirect(reverse('review:review_movie', args=(review.movie.id,)))
 
+
 # @api_view(['GET'])
 # def movie_detail(request, movie_id):
 #     try:
 #         movie = Movie.objects.get(pk=movie_id)
 #     except Movie.DoesNotExist:
 #         return Response(status=status.HTTP_404_NOT_FOUND)
+def send_to_front_end(request):
+    return HttpResponseRedirect('http://localhost:3000/')  # Redireciona ao react

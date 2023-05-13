@@ -1,0 +1,29 @@
+{% extends "review/index.html" %}
+<head>
+    {% load static %}
+</head>
+<body>
+{% block content %}
+<div class="movies-container container">
+    {% if movies %}
+    <div class="row">
+        {% for movie in movies %}
+        <div class="col-sm-4 bg " style="margin-bottom: 10px; margin-top: 10px">
+            <div class="card text-white bg-black" style="width: 26rem; margin: auto">
+                <img src="{{ movie.poster_url }}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.year}}</p>
+                    <a href="{% static 'review:details' movie.id %}" class="btn btn-warning">See more details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    No movies were found.
+    {% endif %}
+</div>
+{% endblock %}
+</body>
