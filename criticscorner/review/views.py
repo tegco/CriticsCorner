@@ -229,6 +229,9 @@ def calculate_rating(movie, ratings_list):
         average = sum(ratings_list) / len(ratings_list)
         movie.avg_rating = average
         movie.save()
+    else:
+        movie.avg_rating = None
+        movie.save()
 
 
 # @api_view(['GET'])
