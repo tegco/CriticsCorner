@@ -11,9 +11,9 @@
     <div class="card d-flex flex-row justify-content-between rounded" style="width: 75%">
         <div class="col-sm-3 d-inline-flex">
             {% if user.reviewer.profile_picture == "" %}
-            <img src="{% static 'images/default.png' %}" class="rounded-circle mr-2">
+            <img class="profile_picture" src="{% static 'images/default.png' %}" class="rounded-circle mr-2">
             {% else %}
-            <img src="{% static review.reviewer.profile_picture %}" class="rounded-circle mr-2">
+            <img class="profile_picture"src="{% static user.reviewer.profile_picture %}" class="rounded-circle mr-2">
             {% endif %}
         </div>
         <div class="col-sm-7 flex-grow-1" style="padding: 20px">
